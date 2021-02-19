@@ -1,0 +1,123 @@
+<% layout("layouts/boilerplate") %>
+    <link rel="stylesheet" href="/css/stars.css">
+    <div class="row">
+        <div class="col-6">
+            <div id='map'></div>
+            <div id="hikecarousel" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% hike.images.forEach((img,i)=>{%>
+                        <div class="carousel-item <%= i === 0 ? " active" : "" %>">
+                            <img src="<%=img.url%>" class="d-block w-100" alt="">
+                        </div>
+                        <% }) %>
+                </div>
+                <% if(hike.images.length> 1) { %>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#hikecarousel"
+                        data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#hikecarousel"
+                        data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                    <% } %>
+            </div>
+            <div class="card mb-2" style="width: 30rem;">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%=hike.trail%>
+                    </h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <%=hike.area %>
+                    </li>
+                    <li class="list-group-item">
+                        <%=hike.distance%>
+                    </li>
+                    <li class="list-group-item">
+                        <%=hike.grade%>
+                    </li>
+                    <li class="list-group-item">
+                        Does it need a guide? <br>
+                        <%= hike.isGuided===true ? "Yeah" : "Nope" %>
+                    </li>
+                    <li class="list-group-item text-muted">
+                        Submitted By: <%=hike.author.username%>
+                    </li>
+                </ul>
+                <% if(currUser && hike.author.equals(currUser)) { %>
+                    <div class="card-body">
+                        <a class="card-link btn btn-warning" href="/hikes/<%= hike._id%>/edit">Edit</a>
+                        <form class="d-inline" action="/hikes/<%=hike._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <div class="card-footer">
+                            <a class="btn btn-success" href="/hikes">All Hiking trails</a>
+                        </div>
+            </div>
+        </div>
+        <div class="col-6">
+            <% if(currUser){ %>
+                <h2>Leave A Review</h2>
+                <form action="/hikes/<%=hike._id%>/reviews" method="POST" class="mb-3 col-7 validated-form" novalidate>
+                    <div class="mb-3">
+                        <fieldset class="starability-basic">
+                            <!-- <legend>Rating:</legend> -->
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1"
+                                checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="body">Review Text</label>
+                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
+                            required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <button class="btn btn-success">Add Review</button>
+                </form>
+
+                <% } %>
+                    <% for(let r of hike.reviews) { %>
+                        <div class="card mb-3">
+                            <div class="card-body">
+                                <h6 class="card-subtitle mb-2">By <%=r.author.username%>
+                                </h6>
+                                <p class="starability-result" data-rating="<%=r.rating%>">
+                                    Rated: <%=r.rating%> stars
+                                </p>
+                                <p class="card-text">Review: <%=r.body%>
+                                </p>
+                                <% if(currUser && r.author.equals(currUser._id)){ %>
+                                    <form action="/hikes/<%=hike._id%>/reviews/<%=r._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                    <% } %>
+                            </div>
+                        </div>
+                        <% } %>
+        </div>
+    </div>
+
+    <script>
+        const mapToken = "<%-process.env.MAPBOX_TOKEN%>"
+        const hike = JSON.parse('<%-JSON.stringify(hike)%>');
+    </script>
+
+    <script src="/javascripts/showPageMap.js"></script>

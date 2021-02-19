@@ -1,0 +1,18 @@
+<% layout("./layouts/boilerplate") %>
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="alert alert-dismissible alert-danger">
+                <h1>
+                    <%=err.message%>
+                </h1>
+                <strong>Error Code:</strong> <a href="/hikes" class="alert-link">Change a few
+                    things
+                    up</a>
+                <% if (process.env.NODE_ENV !=="production" ) { %>
+                    <p>
+                        <%=err.stack%>
+                    </p>
+                    <% } %>
+            </div>
+        </div>
+    </div>

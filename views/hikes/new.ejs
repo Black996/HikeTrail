@@ -1,0 +1,72 @@
+<% layout("layouts/boilerplate") %>
+
+    <div class="row">
+        <h1 class="text-center">New Hiking Trail</h1>
+        <div class="col-md-6 offset-md-3 mb-3">
+            <form action="/hikes" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label class="form-label" for="trail">Trail Name</label>
+                    <input class="form-control" type="text" id="trail" name="hike[trail]" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="area">Area</label>
+                    <input class="form-control" type="text" name="hike[area]" id="area" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <!-- <input type="file" name="image" id="image" multiple> -->
+                <!-- <div class="mb-3">
+                    <label class="form-label" for="image">Image Url</label>
+                    <input class="form-control" type="text" name="hike[image]" id="image" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div> -->
+                <div class="mb-3">
+                    <label class="form-label" for="grade">Difficulty Grade</label>
+                    <input class="form-control" type="text" name="hike[grade]" id="grade"
+                        placeholder="Hard, Medium or Easy" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="distance">Distance</label>
+                    <input class="form-control" type="number" placeholder="in KMs" name="hike[distance]" id="distance"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="file" class="form-control" id="image" name="image" multiple>
+                    <label class="input-group-text" for="image">Upload Image(s)</label>
+                </div>
+                <label>Do you need a guide for this trail:</label>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hike[isGuided]" id="isGuidedTrue" value=true
+                        required>
+                    <label class="form-check-label" for="isGuidedTrue">
+
+                        Yeah
+                    </label>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="hike[isGuided]" id="isGuidedtFlase" value=false
+                        required>
+                    <label class="form-check-label" for="isGuidedtFlase">
+                        Nope
+                    </label>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <button class="btn btn-success mb-3">Add Hiking Trail</button>
+            </form>
+            <a href="/hikes">All Trails</a>
+        </div>
+    </div>
